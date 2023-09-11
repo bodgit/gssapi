@@ -141,7 +141,7 @@ func (ctx *Acceptor) Accept(input []byte) ([]byte, bool, error) {
 		return nil, false, errors.New("didn't receive an AP-REQ")
 	}
 
-	kt, err := loadKeytab()
+	kt, err := loadKeytab(ctx.logger)
 	if err != nil {
 		return nil, false, err
 	}
