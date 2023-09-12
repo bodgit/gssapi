@@ -40,7 +40,7 @@ func (ctx *Initiator) loadConfig() (*config.Config, error) {
 		return config.NewFromString(ctx.config)
 	}
 
-	return loadConfig()
+	return loadConfig(ctx.logger)
 }
 
 func (ctx *Initiator) usePassword() bool {
@@ -70,7 +70,7 @@ func (ctx *Initiator) newClient() (*client.Client, error) {
 		if *ctx.keytab != "" {
 			kt, err = keytab.Load(*ctx.keytab)
 		} else {
-			kt, err = loadClientKeytab()
+			kt, err = loadClientKeytab(ctx.logger)
 		}
 
 		if err != nil {
@@ -82,7 +82,7 @@ func (ctx *Initiator) newClient() (*client.Client, error) {
 
 	ctx.logger.Info("using default session")
 
-	cache, err := loadCCache()
+	cache, err := loadCCache(ctx.logger)
 	if err != nil {
 		return nil, err
 	}

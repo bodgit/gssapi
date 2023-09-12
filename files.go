@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/go-logr/logr"
 	"github.com/hashicorp/go-multierror"
 	"github.com/jcmturner/gokrb5/v8/config"
 	"github.com/jcmturner/gokrb5/v8/credentials"
@@ -19,7 +20,9 @@ const (
 	krb5ClientKTName = "KRB5_CLIENT_KTNAME"
 )
 
-func findFile(env string, try []string) (string, error) {
+func findFile(logger logr.Logger, env string, try []string) (string, error) {
+	logger.Info("looking for file", "env", env, "paths", try)
+
 	path, ok := os.LookupEnv(env)
 	if ok {
 		path = strings.TrimPrefix(path, krb5FilePrefix)
@@ -50,8 +53,8 @@ func findFile(env string, try []string) (string, error) {
 	return "", errs
 }
 
-func loadConfig() (*config.Config, error) {
-	path, err := findFile(krb5Config, []string{"/etc/krb5.conf"})
+func loadConfig(logger logr.Logger) (*config.Config, error) {
+	path, err := findFile(logger, krb5Config, []string{"/etc/krb5.conf"})
 	if err != nil {
 		return nil, err
 	}
@@ -59,8 +62,8 @@ func loadConfig() (*config.Config, error) {
 	return config.Load(path)
 }
 
-func loadCCache() (*credentials.CCache, error) {
-	path, err := findFile(krb5CCName, []string{fmt.Sprintf("/tmp/krb5cc_%d", os.Getuid())})
+func loadCCache(logger logr.Logger) (*credentials.CCache, error) {
+	path, err := findFile(logger, krb5CCName, []string{fmt.Sprintf("/tmp/krb5cc_%d", os.Getuid())})
 	if err != nil {
 		return nil, err
 	}
@@ -68,8 +71,8 @@ func loadCCache() (*credentials.CCache, error) {
 	return credentials.LoadCCache(path)
 }
 
-func loadKeytab() (*keytab.Keytab, error) {
-	path, err := findFile(krb5KTName, []string{"/etc/krb5.keytab"})
+func loadKeytab(logger logr.Logger) (*keytab.Keytab, error) {
+	path, err := findFile(logger, krb5KTName, []string{"/etc/krb5.keytab"})
 	if err != nil {
 		return nil, err
 	}
@@ -77,9 +80,9 @@ func loadKeytab() (*keytab.Keytab, error) {
 	return keytab.Load(path)
 }
 
-func loadClientKeytab() (*keytab.Keytab, error) {
+func loadClientKeytab(logger logr.Logger) (*keytab.Keytab, error) {
 	//nolint:lll
-	path, err := findFile(krb5ClientKTName, []string{fmt.Sprintf("/var/kerberos/krb5/user/%d/client.keytab", os.Geteuid())})
+	path, err := findFile(logger, krb5ClientKTName, []string{fmt.Sprintf("/var/kerberos/krb5/user/%d/client.keytab", os.Geteuid())})
 	if err != nil {
 		return nil, err
 	}
