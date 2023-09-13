@@ -4,5 +4,6 @@
   "packages": {
     ".": {}
   },
+  "release-as": "0.0.1",
   "release-type": "go"
 }
