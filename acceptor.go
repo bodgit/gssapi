@@ -109,9 +109,7 @@ func getAPRepMessage(tkt messages.Ticket, key types.EncryptionKey, ctime time.Ti
 
 	aprep, err := newAPRep(tkt, key, encPart)
 	if err != nil {
-		err = fmt.Errorf("gssapi: %w", err)
-
-		return nil, 0, err
+		return nil, 0, fmt.Errorf("gssapi: %w", err)
 	}
 
 	return &aprep, uint64(seqNum), nil

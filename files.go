@@ -81,8 +81,9 @@ func loadKeytab(logger logr.Logger) (*keytab.Keytab, error) {
 }
 
 func loadClientKeytab(logger logr.Logger) (*keytab.Keytab, error) {
-	//nolint:lll
-	path, err := findFile(logger, krb5ClientKTName, []string{fmt.Sprintf("/var/kerberos/krb5/user/%d/client.keytab", os.Geteuid())})
+	path, err := findFile(logger,
+		krb5ClientKTName,
+		[]string{fmt.Sprintf("/var/kerberos/krb5/user/%d/client.keytab", os.Geteuid())})
 	if err != nil {
 		return nil, err
 	}
