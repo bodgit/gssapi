@@ -12,7 +12,7 @@ The [github.com/bodgit/gssapi](https://godoc.org/github.com/bodgit/gssapi)
 package implements a GSSAPI-like wrapper around the
 [github.com/jcmturner/gokrb5](https://github.com/jcmturner/gokrb5) package.
 
-Sanple Initiator (Client):
+Sample Initiator (Client):
 
 ```golang
 package main
@@ -55,10 +55,11 @@ import (
 	. "github.com/bodgit/gssapi"
 	"github.com/jcmturner/gokrb5/v8/gssapi"
 	"github.com/jcmturner/gokrb5/v8/iana/nametype"
+	"github.com/jcmturner/gokrb5/v8/types"
 )
 
 func main() {
-    principal := types.NewPrincipalName(nametype.KRB_NT_SRV_HST, "host/ssh.example.com")
+	principal := types.NewPrincipalName(nametype.KRB_NT_SRV_HST, "host/ssh.example.com")
 
 	acceptor, err := NewAcceptor(WithServicePrincipal(&principal))
 	if err != nil {
