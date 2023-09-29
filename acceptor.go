@@ -180,6 +180,8 @@ func (ctx *Acceptor) Accept(input []byte) ([]byte, bool, error) {
 
 	ctx.context.flags = int(supportedFlags & binary.LittleEndian.Uint32(apreq.APReq.Authenticator.Cksum.Checksum[20:24]))
 
+	ctx.context.expiry = apreq.APReq.Ticket.DecryptedEncPart.EndTime
+
 	ctx.context.peerName = fmt.Sprintf("%s@%s", apreq.APReq.Ticket.DecryptedEncPart.CName.PrincipalNameString(),
 		apreq.APReq.Ticket.DecryptedEncPart.CRealm)
 

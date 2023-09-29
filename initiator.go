@@ -6,6 +6,7 @@ import (
 	"math"
 	"math/bits"
 	"strings"
+	"time"
 
 	"github.com/go-logr/logr"
 	"github.com/jcmturner/gokrb5/v8/client"
@@ -141,6 +142,9 @@ func (ctx *Initiator) Initiate(service string, flags int, input []byte) ([]byte,
 	//nolint:nestif
 	if len(input) == 0 {
 		ctx.context.flags = flags & supportedFlags
+
+		// BUG(bodgit): see https://github.com/jcmturner/gokrb5/issues/529
+		ctx.context.expiry = time.Now().Add(ctx.client.Config.LibDefaults.TicketLifetime)
 
 		var ticket messages.Ticket
 
