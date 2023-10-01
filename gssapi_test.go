@@ -100,6 +100,7 @@ func testExchange(t *testing.T, service string, mutual bool, initiatorOptions []
 
 	assert.Greater(t, len(output), 0)
 	assert.True(t, cont)
+	assert.WithinRange(t, c.Expiry(), time.Now().Add(1439*time.Minute), time.Now().Add(1441*time.Minute))
 
 	input, cont, err := s.Accept(output)
 	if err != nil {
@@ -107,12 +108,16 @@ func testExchange(t *testing.T, service string, mutual bool, initiatorOptions []
 	}
 
 	if mutual {
+		assert.False(t, c.Established())
 		assert.Greater(t, len(input), 0)
 	} else {
+		assert.True(t, c.Established())
 		assert.Equal(t, len(input), 0)
 	}
 
 	assert.False(t, cont)
+	assert.True(t, s.Established())
+	assert.WithinRange(t, s.Expiry(), time.Now().Add(1439*time.Minute), time.Now().Add(1441*time.Minute))
 
 	if mutual {
 		output, cont, err = c.Initiate(service, flags, input)
@@ -122,6 +127,7 @@ func testExchange(t *testing.T, service string, mutual bool, initiatorOptions []
 
 		assert.Equal(t, len(output), 0)
 		assert.False(t, cont)
+		assert.True(t, c.Established())
 	}
 
 	message := []byte("test message")

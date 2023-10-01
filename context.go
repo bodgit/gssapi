@@ -27,6 +27,7 @@ type context struct {
 	flags      int
 	ctime      time.Time
 	cusec      int
+	expiry     time.Time
 
 	peerName string
 
@@ -107,6 +108,16 @@ func (ctx *context) checkSequenceNumber(sequenceNumber uint64) error {
 // PeerName returns the peer Kerberos principal.
 func (ctx *context) PeerName() string {
 	return ctx.peerName
+}
+
+// Established returns the context state.
+func (ctx *context) Established() bool {
+	return ctx.established
+}
+
+// Expiry returns the ticket expiry for the context.
+func (ctx *context) Expiry() time.Time {
+	return ctx.expiry
 }
 
 // MakeSignature creates a MIC token against the provided input.
