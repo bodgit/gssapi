@@ -1,4 +1,4 @@
-FROM rockylinux/rockylinux:9-ubi-init as kdc
+FROM rockylinux/rockylinux:9-ubi-init AS kdc
 
 EXPOSE 8088
 EXPOSE 8464
@@ -21,6 +21,6 @@ RUN kadmin.local ktadd -norandkey -k /etc/test.keytab test
 RUN kadmin.local addprinc -randkey host/host.example.com
 RUN kadmin.local ktadd -k /etc/host.keytab host/host.example.com
 
-FROM scratch as keytab
+FROM scratch AS keytab
 COPY --from=kdc /etc/test.keytab /test.keytab
 COPY --from=kdc /etc/host.keytab /host.keytab
