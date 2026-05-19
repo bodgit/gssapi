@@ -139,6 +139,9 @@ func (ctx *context) MakeSignature(message []byte) ([]byte, error) {
 		if ctx.acceptor {
 			flags |= gssapi.MICTokenFlagAcceptorSubkey
 		}
+	} else if ctx.hasPeerSubkey() {
+		key = ctx.peerSubkey
+		flags |= gssapi.MICTokenFlagAcceptorSubkey
 	}
 
 	token := gssapi.MICToken{
