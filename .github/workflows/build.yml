@@ -14,12 +14,6 @@ jobs:
   test:
     name: Build and Test
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        go:
-          - '1.21'
-          - '1.22'
 
     env:
       TEST_HOST: host.example.com
@@ -38,10 +32,10 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: ${{ matrix.go }}
+          go-version-file: 'go.mod'
 
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v9
         if: github.event_name == 'pull_request'
         with:
           only-new-issues: true
@@ -107,14 +101,3 @@ jobs:
         uses: shogo82148/actions-goveralls@v1
         with:
           path-to-profile: cover.out
-          flag-name: Go-${{ matrix.go }}
-          parallel: true
-
-  finish:
-    needs: test
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: shogo82148/actions-goveralls@v1
-        with:
-          parallel-finished: true
