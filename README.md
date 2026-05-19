@@ -3,8 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/bodgit/gssapi/badge.svg?branch=main)](https://coveralls.io/github/bodgit/gssapi?branch=main)
 [![Go Report Card](https://goreportcard.com/badge/github.com/bodgit/gssapi)](https://goreportcard.com/report/github.com/bodgit/gssapi)
 [![GoDoc](https://godoc.org/github.com/bodgit/gssapi?status.svg)](https://godoc.org/github.com/bodgit/gssapi)
-![Go version](https://img.shields.io/badge/Go-1.22-brightgreen.svg)
-![Go version](https://img.shields.io/badge/Go-1.21-brightgreen.svg)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/bodgit/gssapi)
 
 # GSSAPI wrapper for gokrb5
 

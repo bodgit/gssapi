@@ -1,3 +1,4 @@
+//nolint:revive
 package gssapi_test
 
 import (
