@@ -2,6 +2,7 @@
 package gssapi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -10,7 +11,6 @@ import (
 
 	. "github.com/bodgit/gssapi"
 	"github.com/go-logr/logr/testr"
-	"github.com/hashicorp/go-multierror"
 	"github.com/jcmturner/gokrb5/v8/gssapi"
 	"github.com/jcmturner/gokrb5/v8/iana/nametype"
 	"github.com/jcmturner/gokrb5/v8/types"
@@ -27,7 +27,7 @@ func environmentVariables(t *testing.T) (string, string, string, string, string)
 		password string
 		keytab   string
 		ok       bool
-		errs     *multierror.Error
+		err      error
 	)
 
 	for _, env := range []struct {
@@ -56,12 +56,12 @@ func environmentVariables(t *testing.T) (string, string, string, string, string)
 		},
 	} {
 		if *env.ptr, ok = os.LookupEnv(env.name); !ok {
-			errs = multierror.Append(errs, fmt.Errorf("%s is not set", env.name))
+			err = errors.Join(err, fmt.Errorf("%s is not set", env.name))
 		}
 	}
 
-	if errs.ErrorOrNil() != nil {
-		t.Fatal(errs)
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	return host, realm, username, password, keytab
