@@ -1,4 +1,4 @@
-FROM rockylinux/rockylinux:10-ubi-init@sha256:9d08fffa504f757ea7e970de4409945aabc1102cb66c194f77eefa9f98e662dc AS kdc
+FROM rockylinux/rockylinux:10-ubi-init@sha256:c383797bb0219908988ea2ef03e9ba03428461a1f588c2ac9f084617ae61fe5a AS kdc
 
 EXPOSE 8088
 EXPOSE 8464
