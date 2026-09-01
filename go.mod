@@ -3,7 +3,7 @@ module github.com/bodgit/gssapi
 go 1.23.0
 
 require (
-	github.com/go-logr/logr v1.4.3
+	github.com/go-logr/logr v1.4.4
 	github.com/jcmturner/gofork v1.7.6
 	github.com/jcmturner/gokrb5/v8 v8.4.4
 	github.com/spf13/afero v1.15.0
